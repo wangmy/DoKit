@@ -1,17 +1,17 @@
+////
+////  DoraemonFileSyncPlugin.h
+////  DoraemonKit
+////
+////  Created by didi on 2020/6/10.
+////
 //
-//  DoraemonFileSyncPlugin.h
-//  DoraemonKit
+//#import <Foundation/Foundation.h>
+//#import "DoraemonPluginProtocol.h"
 //
-//  Created by didi on 2020/6/10.
+//NS_ASSUME_NONNULL_BEGIN
 //
-
-#import <Foundation/Foundation.h>
-#import "DoraemonPluginProtocol.h"
-
-NS_ASSUME_NONNULL_BEGIN
-
-@interface DoraemonFileSyncPlugin : NSObject<DoraemonPluginProtocol>
-
-@end
-
-NS_ASSUME_NONNULL_END
+//@interface DoraemonFileSyncPlugin : NSObject<DoraemonPluginProtocol>
+//
+//@end
+//
+//NS_ASSUME_NONNULL_END

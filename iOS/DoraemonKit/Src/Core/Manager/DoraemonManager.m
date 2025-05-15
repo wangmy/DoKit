@@ -218,9 +218,9 @@ typedef void (^DoraemonPerformanceBlock)(NSDictionary *);
  */
 - (void)initData{
     #pragma mark - 平台工具
-    [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonMockPlugin];
-    [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonHealthPlugin];
-    [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonFileSyncPlugin];
+//    [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonMockPlugin];
+//    [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonHealthPlugin];
+//    [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonFileSyncPlugin];
     
     #pragma mark - 常用工具
     [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonAppSettingPlugin];
@@ -736,30 +736,30 @@ typedef void (^DoraemonPerformanceBlock)(NSDictionary *);
                                            @{kBuriedPoint:@"dokit_sdk_ui_ck_widget_3d"}
                                    ],
                            // 平台工具
-                           @(DoraemonManagerPluginType_DoraemonMockPlugin) : @[
-                                @{kTitle:DoraemonLocalizedString(@"Mock数据")},
-                                   @{kDesc:DoraemonLocalizedString(@"Mock数据")},
-                                   @{kIcon:@"doraemon_mock"},
-                                   @{kPluginName:@"DoraemonMockPlugin"},
-                                   @{kAtModule:DoraemonLocalizedString(@"平台工具")},
-                                   @{kBuriedPoint:@"dokit_sdk_platform_ck_mock"}
-                                   ],
-                           @(DoraemonManagerPluginType_DoraemonHealthPlugin) : @[
-                               @{kTitle:DoraemonLocalizedString(@"健康体检")},
-                                  @{kDesc:DoraemonLocalizedString(@"健康体检中心")},
-                                  @{kIcon:@"doraemon_health"},
-                                  @{kPluginName:@"DoraemonHealthPlugin"},
-                                  @{kAtModule:DoraemonLocalizedString(@"平台工具")},
-                                  @{kBuriedPoint:@"dokit_sdk_platform_ck_health"}
-                                  ],
-                           @(DoraemonManagerPluginType_DoraemonFileSyncPlugin) : @[
-                                @{kTitle:DoraemonLocalizedString(@"文件同步")},
-                                    @{kDesc:DoraemonLocalizedString(@"文件同步")},
-                                    @{kIcon:@"doraemon_file_sync"},
-                                    @{kPluginName:@"DoraemonFileSyncPlugin"},
-                                    @{kAtModule:DoraemonLocalizedString(@"平台工具")},
-                                    @{kBuriedPoint:@"dokit_sdk_platform_ck_filesync"}
-                                    ]
+//                           @(DoraemonManagerPluginType_DoraemonMockPlugin) : @[
+//                                @{kTitle:DoraemonLocalizedString(@"Mock数据")},
+//                                   @{kDesc:DoraemonLocalizedString(@"Mock数据")},
+//                                   @{kIcon:@"doraemon_mock"},
+//                                   @{kPluginName:@"DoraemonMockPlugin"},
+//                                   @{kAtModule:DoraemonLocalizedString(@"平台工具")},
+//                                   @{kBuriedPoint:@"dokit_sdk_platform_ck_mock"}
+//                                   ],
+//                           @(DoraemonManagerPluginType_DoraemonHealthPlugin) : @[
+//                               @{kTitle:DoraemonLocalizedString(@"健康体检")},
+//                                  @{kDesc:DoraemonLocalizedString(@"健康体检中心")},
+//                                  @{kIcon:@"doraemon_health"},
+//                                  @{kPluginName:@"DoraemonHealthPlugin"},
+//                                  @{kAtModule:DoraemonLocalizedString(@"平台工具")},
+//                                  @{kBuriedPoint:@"dokit_sdk_platform_ck_health"}
+//                                  ],
+//                           @(DoraemonManagerPluginType_DoraemonFileSyncPlugin) : @[
+//                                @{kTitle:DoraemonLocalizedString(@"文件同步")},
+//                                    @{kDesc:DoraemonLocalizedString(@"文件同步")},
+//                                    @{kIcon:@"doraemon_file_sync"},
+//                                    @{kPluginName:@"DoraemonFileSyncPlugin"},
+//                                    @{kAtModule:DoraemonLocalizedString(@"平台工具")},
+//                                    @{kBuriedPoint:@"dokit_sdk_platform_ck_filesync"}
+//                                    ]
                            }[@(pluginType)];
     
     DoraemonManagerPluginTypeModel *model = [DoraemonManagerPluginTypeModel new];

@@ -1,16 +1,16 @@
+////
+////  DoraemonFileSyncViewController.h
+////  DoraemonKit
+////
+////  Created by didi on 2020/6/10.
+////
 //
-//  DoraemonFileSyncViewController.h
-//  DoraemonKit
+//#import "DoraemonBaseViewController.h"
 //
-//  Created by didi on 2020/6/10.
+//NS_ASSUME_NONNULL_BEGIN
 //
-
-#import "DoraemonBaseViewController.h"
-
-NS_ASSUME_NONNULL_BEGIN
-
-@interface DoraemonFileSyncViewController : DoraemonBaseViewController
-
-@end
-
-NS_ASSUME_NONNULL_END
+//@interface DoraemonFileSyncViewController : DoraemonBaseViewController
+//
+//@end
+//
+//NS_ASSUME_NONNULL_END

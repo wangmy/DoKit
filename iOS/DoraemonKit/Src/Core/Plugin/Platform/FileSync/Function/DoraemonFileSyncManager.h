@@ -1,23 +1,23 @@
+////
+////  DoraemonFileSyncManager.h
+////  DoraemonKit
+////
+////  Created by didi on 2020/6/10.
+////
 //
-//  DoraemonFileSyncManager.h
-//  DoraemonKit
+//#import <Foundation/Foundation.h>
+//#import <GCDWebServer/GCDWebServer.h>
 //
-//  Created by didi on 2020/6/10.
+//NS_ASSUME_NONNULL_BEGIN
 //
-
-#import <Foundation/Foundation.h>
-#import <GCDWebServer/GCDWebServer.h>
-
-NS_ASSUME_NONNULL_BEGIN
-
-@interface DoraemonFileSyncManager : GCDWebServer
-
-+ (instancetype)sharedInstance;
-
-@property (nonatomic, assign) BOOL start;//服务时候开启
-
-- (void)startServer;
-
-@end
-
-NS_ASSUME_NONNULL_END
+//@interface DoraemonFileSyncManager : GCDWebServer
+//
+//+ (instancetype)sharedInstance;
+//
+//@property (nonatomic, assign) BOOL start;//服务时候开启
+//
+//- (void)startServer;
+//
+//@end
+//
+//NS_ASSUME_NONNULL_END

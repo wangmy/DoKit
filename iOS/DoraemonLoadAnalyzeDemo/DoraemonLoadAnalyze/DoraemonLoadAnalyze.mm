@@ -325,6 +325,7 @@ void printLoadAnalyzeInfo(void){
 @end
 @implementation DoraemonLoadAnalyze
 +(void)load{
+    NSLog(@"DoraemonLoadAnalyze call load");
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     BOOL needMethodUseTime = [defaults boolForKey:@"doraemon_method_use_time_key"];
     if (!needMethodUseTime) {
@@ -356,7 +357,7 @@ void printLoadAnalyzeInfo(void){
         [loadCS addEntriesFromDictionary:@{[NSString stringWithFormat:@"%@",cls]:cls}];
 
         //DLALog(@"DLA >>>> category_t:%@ (%@)",cls,name);
-        //swizzeLoadMethodInClasss(cls, YES);
+        swizzeLoadMethodInClasss(cls, YES);
     }
     
     for (NSString *key in loadCS) {

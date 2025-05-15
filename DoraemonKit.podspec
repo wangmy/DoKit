@@ -77,10 +77,10 @@ iOS各式各样的工具集合
     ss.resource_bundle = {
       'DoraemonKit' => 'iOS/DoraemonKit/Resource/**/*'
     }
-    ss.dependency 'GCDWebServer'
-    ss.dependency 'GCDWebServer/WebUploader'
-    ss.dependency 'GCDWebServer/WebDAV'
-    ss.dependency 'FMDB'
+    #ss.dependency 'GCDWebServer'
+    #ss.dependency 'GCDWebServer/WebUploader'
+    #ss.dependency 'GCDWebServer/WebDAV'
+    #ss.dependency 'FMDB'
   end
 
   s.subspec 'WithLogger' do |ss| 

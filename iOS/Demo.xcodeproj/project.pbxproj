@@ -12,6 +12,9 @@
 		18C7CAAC26FB5F8D00A47F7C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18C7CAAA26FB5F8D00A47F7C /* Main.storyboard */; };
 		18C7CAAE26FB5F8F00A47F7C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18C7CAAD26FB5F8F00A47F7C /* Assets.xcassets */; };
 		18C7CAB126FB5F8F00A47F7C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18C7CAAF26FB5F8F00A47F7C /* LaunchScreen.storyboard */; };
+		3CF856502DD5BF5500E40111 /* TestViewController1.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CF8564F2DD5BF5500E40111 /* TestViewController1.m */; };
+		3CF856532DD5BF7700E40111 /* TestViewController1+Category1.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CF856522DD5BF7700E40111 /* TestViewController1+Category1.m */; };
+		3CF856562DD5BF7E00E40111 /* TestViewController1+Category2.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CF856552DD5BF7E00E40111 /* TestViewController1+Category2.m */; };
 		FF6F1A3FA338925D5551ADB6 /* libPods-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D44C18175B75199F625E8EC7 /* libPods-Demo.a */; };
 /* End PBXBuildFile section */
 
@@ -24,6 +27,13 @@
 		18C7CAAD26FB5F8F00A47F7C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		18C7CAB026FB5F8F00A47F7C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		18C7CAB226FB5F8F00A47F7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3CF8564D2DD5BF5400E40111 /* Demo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Demo-Bridging-Header.h"; sourceTree = "<group>"; };
+		3CF8564E2DD5BF5500E40111 /* TestViewController1.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestViewController1.h; sourceTree = "<group>"; };
+		3CF8564F2DD5BF5500E40111 /* TestViewController1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestViewController1.m; sourceTree = "<group>"; };
+		3CF856512DD5BF7700E40111 /* TestViewController1+Category1.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TestViewController1+Category1.h"; sourceTree = "<group>"; };
+		3CF856522DD5BF7700E40111 /* TestViewController1+Category1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "TestViewController1+Category1.m"; sourceTree = "<group>"; };
+		3CF856542DD5BF7E00E40111 /* TestViewController1+Category2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TestViewController1+Category2.h"; sourceTree = "<group>"; };
+		3CF856552DD5BF7E00E40111 /* TestViewController1+Category2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "TestViewController1+Category2.m"; sourceTree = "<group>"; };
 		D44C18175B75199F625E8EC7 /* libPods-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC6833A07F0818E63D44A2B9 /* Pods-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.debug.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -67,6 +77,13 @@
 				18C7CAAD26FB5F8F00A47F7C /* Assets.xcassets */,
 				18C7CAAF26FB5F8F00A47F7C /* LaunchScreen.storyboard */,
 				18C7CAB226FB5F8F00A47F7C /* Info.plist */,
+				3CF8564E2DD5BF5500E40111 /* TestViewController1.h */,
+				3CF8564F2DD5BF5500E40111 /* TestViewController1.m */,
+				3CF8564D2DD5BF5400E40111 /* Demo-Bridging-Header.h */,
+				3CF856512DD5BF7700E40111 /* TestViewController1+Category1.h */,
+				3CF856522DD5BF7700E40111 /* TestViewController1+Category1.m */,
+				3CF856542DD5BF7E00E40111 /* TestViewController1+Category2.h */,
+				3CF856552DD5BF7E00E40111 /* TestViewController1+Category2.m */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -100,6 +117,7 @@
 				18C7CA9E26FB5F8D00A47F7C /* Frameworks */,
 				18C7CA9F26FB5F8D00A47F7C /* Resources */,
 				3F213C27944A91E0968B026B /* [CP] Copy Pods Resources */,
+				4C24DD33A45136BED06B674E /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -122,6 +140,7 @@
 				TargetAttributes = {
 					18C7CAA026FB5F8D00A47F7C = {
 						CreatedOnToolsVersion = 13.0;
+						LastSwiftMigration = 1620;
 					};
 				};
 			};
@@ -174,6 +193,23 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		4C24DD33A45136BED06B674E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		4D41A223381189A234AE62A7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -203,7 +239,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3CF856532DD5BF7700E40111 /* TestViewController1+Category1.m in Sources */,
+				3CF856562DD5BF7E00E40111 /* TestViewController1+Category2.m in Sources */,
 				18C7CAA926FB5F8D00A47F7C /* ViewController.swift in Sources */,
+				3CF856502DD5BF5500E40111 /* TestViewController1.m in Sources */,
 				18C7CAA526FB5F8D00A47F7C /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -352,8 +391,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 59LS7N898H;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Demo/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "扫码需要开启您的摄像头权限，用于识别";
@@ -368,9 +409,11 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.didi.dokit;
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.wmy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Demo/Demo-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -382,6 +425,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -401,6 +445,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.didi.dokit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Demo/Demo-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

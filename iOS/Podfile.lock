@@ -1,10 +1,10 @@
 PODS:
-  - DoraemonKit/Core (3.1.5)
-  - DoraemonKit/WithGPS (3.1.5):
+  - DoraemonKit/Core (1.0.6)
+  - DoraemonKit/WithGPS (1.0.6):
     - DoraemonKit/Core
-  - DoraemonKit/WithLoad (3.1.5):
+  - DoraemonKit/WithLoad (1.0.6):
     - DoraemonKit/Core
-  - DoraemonKit/WithMLeaksFinder (3.1.5):
+  - DoraemonKit/WithMLeaksFinder (1.0.6):
     - DoraemonKit/Core
 
 DEPENDENCIES:
@@ -18,7 +18,7 @@ EXTERNAL SOURCES:
     :path: ".."
 
 SPEC CHECKSUMS:
-  DoraemonKit: 55ee52054f6b09102f230263d67c3969e9a7b2a7
+  DoraemonKit: 4769754c465713b7bc792c73a7bb405819afb9b0
 
 PODFILE CHECKSUM: 832ff5e82bca0f28fbf39da9a461b8ef785d58cf
 

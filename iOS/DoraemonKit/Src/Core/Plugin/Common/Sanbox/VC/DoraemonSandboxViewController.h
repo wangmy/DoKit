@@ -6,7 +6,8 @@
 //
 
 #import "DoraemonBaseViewController.h"
+@class DoraemonSandboxModel;
 
 @interface DoraemonSandboxViewController : DoraemonBaseViewController
-- (instancetype)initRootPaths:(NSSet<NSString *> *)rootPaths;
+- (instancetype)initRootsPaths:(NSArray<DoraemonSandboxModel *> *)rootsPaths;
 @end

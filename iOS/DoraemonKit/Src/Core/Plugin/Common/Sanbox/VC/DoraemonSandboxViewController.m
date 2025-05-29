@@ -18,8 +18,10 @@
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) DoraemonSandboxModel *currentDirModel;
-@property (nonatomic, strong) NSMutableDictionary<NSString *, NSArray<DoraemonSandboxModel *> *> *datasDict;
-@property (nonatomic, copy) NSArray<NSString *> *rootPaths;
+@property (nonatomic, strong) NSMutableArray<NSArray<DoraemonSandboxModel *> *> *datas;
+@property (nonatomic, copy) NSSet<NSString *> *rootsPathsSet;
+@property (nonatomic, strong) NSArray<DoraemonSandboxModel *> *rootsPaths;
+@property (nonatomic, copy) NSString *rootPathName;
 @property (nonatomic, assign) BOOL isRoot;
 
 @property (nonatomic, strong) DoraemonNavBarItemModel *leftModel;
@@ -27,10 +29,10 @@
 @end
 
 @implementation DoraemonSandboxViewController
-- (instancetype)initRootPaths:(NSArray<NSString *> *)rootPaths {
+- (instancetype)initRootsPaths:(NSArray<DoraemonSandboxModel *> *)rootsPaths {
     self = [super init];
     if (self) {
-        self.rootPaths = rootPaths;
+        self.rootsPaths = rootsPaths;
     }
     return self;
 }
@@ -67,11 +69,20 @@
 }
 
 - (void)initData {
-    _datasDict = [NSMutableDictionary dictionary];
-    if (_rootPaths.count == 0) {
-        _rootPaths = @[NSHomeDirectory()];//[NSSet setWithObjects:NSHomeDirectory(), nil];
+    _datas = [NSMutableArray array];
+    self.rootPathName = DoraemonLocalizedString(@"沙盒浏览器");
+    if (_rootsPaths.count == 0) {
+        DoraemonSandboxModel *rootModel = [[DoraemonSandboxModel alloc] init];
+        rootModel.path = NSHomeDirectory();
+        rootModel.name = @"HomeDirectory";
+        rootModel.type = DoraemonSandboxFileTypeRoot;
+        self.rootsPaths = @[rootModel];
     }
-//    _rootPath = NSHomeDirectory();
+    NSMutableSet *set = [NSMutableSet set];
+    for (DoraemonSandboxModel *rootModel in self.rootsPaths) {
+        [set addObject:rootModel.path];
+    }
+    self.rootsPathsSet = [set copy];
 }
 
 - (void)initUI {
@@ -84,17 +95,19 @@
 
 
 - (void)loadPath:(NSString *)filePath {
-    NSFileManager *fm = [NSFileManager defaultManager];
+    [self.datas removeAllObjects];
     NSString *targetPath = filePath;
     //该目录信息
     DoraemonSandboxModel *model = [[DoraemonSandboxModel alloc] init];
-    if (targetPath.length == 0 || [self.datasDict.allKeys containsObject:targetPath]) {
-//        targetPath = _rootPath;
+    BOOL isRoort = (targetPath.length == 0 || [self.rootsPathsSet containsObject:targetPath]);
+    if (isRoort) {
         model.name = DoraemonLocalizedString(@"根目录");
         model.type = DoraemonSandboxFileTypeRoot;
         self.tableView.frame = CGRectMake(0, self.bigTitleView.doraemon_bottom, self.view.doraemon_width, self.view.doraemon_height-self.bigTitleView.doraemon_bottom);
         self.bigTitleView.hidden = NO;
         self.navigationController.navigationBarHidden = YES;
+        self.rootPathName = DoraemonLocalizedString(@"沙盒浏览器");
+        self.title = self.rootPathName;
         [self setLeftNavBarItems:nil];
     }else{
         model.name = DoraemonLocalizedString(@"返回上一级");
@@ -102,8 +115,8 @@
         self.bigTitleView.hidden = YES;
         self.navigationController.navigationBarHidden = NO;
         self.tableView.frame = CGRectMake(0, IPHONE_NAVIGATIONBAR_HEIGHT, self.view.doraemon_width, self.view.doraemon_height-IPHONE_NAVIGATIONBAR_HEIGHT);
-        NSString *dirTitle =  [fm displayNameAtPath:targetPath];
-        self.title = dirTitle;
+        NSString *dirTitle =  [[NSFileManager defaultManager] displayNameAtPath:targetPath];
+        self.title = [NSString stringWithFormat:@"%@-%@",self.rootPathName,dirTitle];
         UIImage *image = [UIImage doraemon_xcassetImageNamed:@"doraemon_back"];
 #if defined(__IPHONE_13_0) && (__IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_13_0)
         if (@available(iOS 13.0, *)) {
@@ -120,136 +133,90 @@
     _currentDirModel = model;
     
     NSMutableArray *filesDatas = [NSMutableArray array];
-    if (targetPath.length == 0) {
-        
-        for (NSString *rootPath in self.rootPaths) {
-            targetPath = rootPath;
-            
-            //该目录下面的内容信息
-            NSMutableArray *files = @[].mutableCopy;
-            NSError *error = nil;
-            NSArray *paths = [fm contentsOfDirectoryAtPath:targetPath error:&error];
-            for (NSString *path in paths) {
-                BOOL isDir = false;
-                NSString *fullPath = [targetPath stringByAppendingPathComponent:path];
-                [fm fileExistsAtPath:fullPath isDirectory:&isDir];
-                
-                DoraemonSandboxModel *model = [[DoraemonSandboxModel alloc] init];
-                model.path = fullPath;
-                if (isDir) {
-                    model.type = DoraemonSandboxFileTypeDirectory;
-                }else{
-                    model.type = DoraemonSandboxFileTypeFile;
-                }
-                model.name = path;
-                
-                [files addObject:model];
-            }
-            
-            //_dataArray = files.copy;
-            
-            // 按名称排序，并保持文件夹在上
-            NSArray *filesData = [files sortedArrayUsingComparator:^NSComparisonResult(DoraemonSandboxModel * _Nonnull obj1, DoraemonSandboxModel * _Nonnull obj2) {
-                
-                BOOL isObj1Directory = (obj1.type == DoraemonSandboxFileTypeDirectory);
-                BOOL isObj2Directory = (obj2.type == DoraemonSandboxFileTypeDirectory);
-                
-                // 都是目录 或 都不是目录
-                BOOL isSameType = ((isObj1Directory && isObj2Directory) || (!isObj1Directory && !isObj2Directory));
-                
-                if (isSameType) { // 都是目录 或 都不是目录
-                    
-                    // 按名称排序
-                    return [obj1.name.lowercaseString compare:obj2.name.lowercaseString];
-                }
-                
-                // 以下是一个为目录，一个不为目录的情况
-                
-                if (isObj1Directory) { // obj1是目录
-                    
-                    // 升序，保持文件夹在上
-                    return NSOrderedAscending;
-                }
-                
-                // obj2是目录，降序
-                return NSOrderedDescending;
-            }];
-            [filesDatas addObject:filesData];
-            
-            self.datasDict[targetPath] = filesData;
+    if (isRoort) {
+        for (DoraemonSandboxModel *rootModel in self.rootsPaths) {
+            targetPath = rootModel.path;
+            [self.datas addObject:[self _getFilesDataWithPath:targetPath]];
         }
     } else {
-        //该目录下面的内容信息
-        NSMutableArray *files = @[].mutableCopy;
-        NSError *error = nil;
-        NSArray *paths = [fm contentsOfDirectoryAtPath:targetPath error:&error];
-        for (NSString *path in paths) {
-            BOOL isDir = false;
-            NSString *fullPath = [targetPath stringByAppendingPathComponent:path];
-            [fm fileExistsAtPath:fullPath isDirectory:&isDir];
-            
-            DoraemonSandboxModel *model = [[DoraemonSandboxModel alloc] init];
-            model.path = fullPath;
-            if (isDir) {
-                model.type = DoraemonSandboxFileTypeDirectory;
-            }else{
-                model.type = DoraemonSandboxFileTypeFile;
-            }
-            model.name = path;
-            
-            [files addObject:model];
-        }
-        
-        //_dataArray = files.copy;
-        
-        // 按名称排序，并保持文件夹在上
-        NSArray *filesData = [files sortedArrayUsingComparator:^NSComparisonResult(DoraemonSandboxModel * _Nonnull obj1, DoraemonSandboxModel * _Nonnull obj2) {
-            
-            BOOL isObj1Directory = (obj1.type == DoraemonSandboxFileTypeDirectory);
-            BOOL isObj2Directory = (obj2.type == DoraemonSandboxFileTypeDirectory);
-            
-            // 都是目录 或 都不是目录
-            BOOL isSameType = ((isObj1Directory && isObj2Directory) || (!isObj1Directory && !isObj2Directory));
-            
-            if (isSameType) { // 都是目录 或 都不是目录
-                
-                // 按名称排序
-                return [obj1.name.lowercaseString compare:obj2.name.lowercaseString];
-            }
-            
-            // 以下是一个为目录，一个不为目录的情况
-            
-            if (isObj1Directory) { // obj1是目录
-                
-                // 升序，保持文件夹在上
-                return NSOrderedAscending;
-            }
-            
-            // obj2是目录，降序
-            return NSOrderedDescending;
-        }];
-        [filesDatas addObject:filesData];
-        
-        self.datasDict[targetPath] = filesData;
+        [self.datas addObject:[self _getFilesDataWithPath:targetPath]];
     }
     
     [self.tableView reloadData];
 }
 
+- (NSArray *)_getFilesDataWithPath:(NSString *)targetPath {
+    NSFileManager *fm = [NSFileManager defaultManager];
+    //该目录下面的内容信息
+    NSMutableArray *files = @[].mutableCopy;
+    NSError *error = nil;
+    NSArray *paths = [fm contentsOfDirectoryAtPath:targetPath error:&error];
+    for (NSString *path in paths) {
+        BOOL isDir = false;
+        NSString *fullPath = [targetPath stringByAppendingPathComponent:path];
+        [fm fileExistsAtPath:fullPath isDirectory:&isDir];
+        
+        DoraemonSandboxModel *model = [[DoraemonSandboxModel alloc] init];
+        model.path = fullPath;
+        if (isDir) {
+            model.type = DoraemonSandboxFileTypeDirectory;
+        }else{
+            model.type = DoraemonSandboxFileTypeFile;
+        }
+        model.name = path;
+        
+        [files addObject:model];
+    }
+    
+    //_dataArray = files.copy;
+    
+    // 按名称排序，并保持文件夹在上
+    NSArray *filesData = [files sortedArrayUsingComparator:^NSComparisonResult(DoraemonSandboxModel * _Nonnull obj1, DoraemonSandboxModel * _Nonnull obj2) {
+        
+        BOOL isObj1Directory = (obj1.type == DoraemonSandboxFileTypeDirectory);
+        BOOL isObj2Directory = (obj2.type == DoraemonSandboxFileTypeDirectory);
+        
+        // 都是目录 或 都不是目录
+        BOOL isSameType = ((isObj1Directory && isObj2Directory) || (!isObj1Directory && !isObj2Directory));
+        
+        if (isSameType) { // 都是目录 或 都不是目录
+            
+            // 按名称排序
+            return [obj1.name.lowercaseString compare:obj2.name.lowercaseString];
+        }
+        
+        // 以下是一个为目录，一个不为目录的情况
+        
+        if (isObj1Directory) { // obj1是目录
+            
+            // 升序，保持文件夹在上
+            return NSOrderedAscending;
+        }
+        
+        // obj2是目录，降序
+        return NSOrderedDescending;
+    }];
+    if (filesData.count > 0) {
+        return filesData;
+    }
+    return  @[];
+}
 
 #pragma mark- UITableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return self.datasDict.allKeys.count;
+    return self.datas.count;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (self.datasDict.allKeys.count > 1) {
-        return self.datasDict.allKeys[section];
+   if (self.datas.count > 1) {
+        if (self.rootsPaths.count > section) {
+            return [self.rootsPaths objectAtIndex:section].name;
+        }
     }
     return @"";
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.datasDict.allValues[section].count;
+    return self.datas[section].count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -258,7 +225,7 @@
     if (!cell) {
         cell = [[DoraemonSandBoxCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
-    DoraemonSandboxModel *model = self.datasDict.allValues[indexPath.section][indexPath.row];
+    DoraemonSandboxModel *model = self.datas[indexPath.section][indexPath.row];
     [cell renderUIWithData:model];
     return cell;
 }
@@ -272,7 +239,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    DoraemonSandboxModel *model = self.datasDict.allValues[indexPath.section][indexPath.row];
+    DoraemonSandboxModel *model = self.datas[indexPath.section][indexPath.row];
     [self deleteByDoraemonSandboxModel:model];
 }
 
@@ -283,10 +250,13 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    DoraemonSandboxModel *model = self.datasDict.allValues[indexPath.section][indexPath.row];
+    DoraemonSandboxModel *model = self.datas[indexPath.section][indexPath.row];
     if (model.type == DoraemonSandboxFileTypeFile) {
         [self handleFileWithPath:model.path];
     } else if (model.type == DoraemonSandboxFileTypeDirectory) {
+        if (self.datas.count > 1 && self.rootsPaths.count > indexPath.section) {
+            self.rootPathName = self.rootsPaths[indexPath.section].name;
+        }
         [self loadPath:model.path];
     }
 }

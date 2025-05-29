@@ -21,7 +21,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
         // Do any additional setup after loading the view.
-        let vc = TestViewController1()
+        let _ = TestViewController1()
         
     }
     

@@ -301,17 +301,17 @@ typedef void (^DoraemonPerformanceBlock)(NSDictionary *);
 - (void)addPluginWithPluginType:(DoraemonManagerPluginType)pluginType
 {
     DoraemonManagerPluginTypeModel *model = [self getDefaultPluginDataWithPluginType:pluginType];
-    [self addPluginWithTitle:model.title icon:model.icon desc:model.desc pluginName:model.pluginName atModule:model.atModule buriedPoint:model.buriedPoint];
+    [self addPluginWithTitle:model.title icon:model.icon desc:model.desc pluginName:model.pluginName atModule:model.atModule atIndex:-1 buriedPoint:model.buriedPoint];
 }
 
 // out 1
-- (void)addPluginWithTitle:(NSString *)title icon:(NSString *)iconName desc:(NSString *)desc pluginName:(NSString *)entryName atModule:(NSString *)moduleName{
-    [self addPluginWithTitle:title icon:iconName desc:desc pluginName:entryName atModule:moduleName buriedPoint:@"dokit_sdk_business_ck"];
+- (void)addPluginWithTitle:(NSString *)title icon:(NSString *)iconName desc:(NSString *)desc pluginName:(NSString *)entryName atModule:(NSString *)moduleName atIndex:(NSInteger)index{
+    [self addPluginWithTitle:title icon:iconName desc:desc pluginName:entryName atModule:moduleName atIndex:index buriedPoint:@"dokit_sdk_business_ck"];
 }
 
-- (void)addPluginWithTitle:(NSString *)title icon:(NSString *)iconName desc:(NSString *)desc pluginName:(NSString *)entryName atModule:(NSString *)moduleName buriedPoint:(NSString *)buriedPoint{
+- (void)addPluginWithTitle:(NSString *)title icon:(NSString *)iconName desc:(NSString *)desc pluginName:(NSString *)entryName atModule:(NSString *)moduleName atIndex:(NSInteger)index buriedPoint:(NSString *)buriedPoint{
     
-    NSMutableDictionary *pluginDic = [self foundGroupWithModule:moduleName];
+    NSMutableDictionary *pluginDic = [self foundGroupWithModule:moduleName atIndex:index];
     pluginDic[@"key"] = [NSString stringWithFormat:@"%@-%@-%@-%@",moduleName,title,iconName,desc];
     pluginDic[@"name"] = title;
     pluginDic[@"icon"] = iconName;
@@ -322,9 +322,9 @@ typedef void (^DoraemonPerformanceBlock)(NSDictionary *);
 }
 
 // out 2
-- (void)addPluginWithTitle:(NSString *)title icon:(NSString *)iconName desc:(NSString *)desc pluginName:(NSString *)entryName atModule:(NSString *)moduleName handle:(void (^)(NSDictionary *))handleBlock
+- (void)addPluginWithTitle:(NSString *)title icon:(NSString *)iconName desc:(NSString *)desc pluginName:(NSString *)entryName atModule:(NSString *)moduleName atIndex:(NSInteger)index handle:(void (^)(NSDictionary *))handleBlock
 {
-    NSMutableDictionary *pluginDic = [self foundGroupWithModule:moduleName];
+    NSMutableDictionary *pluginDic = [self foundGroupWithModule:moduleName atIndex:index];
     pluginDic[@"key"] = [NSString stringWithFormat:@"%@-%@-%@-%@",moduleName,title,iconName,desc];
     pluginDic[@"name"] = title;
     pluginDic[@"icon"] = iconName;
@@ -336,8 +336,8 @@ typedef void (^DoraemonPerformanceBlock)(NSDictionary *);
 
 }
 
-- (void)addPluginWithTitle:(NSString *)title image:(UIImage *)image desc:(NSString *)desc pluginName:(NSString *)entryName atModule:(NSString *)moduleName handle:(void (^)(NSDictionary * _Nonnull))handleBlock {
-    NSMutableDictionary *pluginDic = [self foundGroupWithModule:moduleName];
+- (void)addPluginWithTitle:(NSString *)title image:(UIImage *)image desc:(NSString *)desc pluginName:(NSString *)entryName atModule:(NSString *)moduleName atIndex:(NSInteger)index handle:(void (^)(NSDictionary * _Nonnull))handleBlock {
+    NSMutableDictionary *pluginDic = [self foundGroupWithModule:moduleName atIndex:-1];
     pluginDic[@"key"] = [NSString stringWithFormat:@"%@-%@-%@",moduleName,title,desc];
     pluginDic[@"name"] = title;
     pluginDic[@"image"] = image;
@@ -350,7 +350,7 @@ typedef void (^DoraemonPerformanceBlock)(NSDictionary *);
     pluginDic[@"show"] = @1;
 }
 
-- (NSMutableDictionary *)foundGroupWithModule:(NSString *)module
+- (NSMutableDictionary *)foundGroupWithModule:(NSString *)module atIndex:(NSInteger)index
 {
     NSMutableDictionary *pluginDic = [NSMutableDictionary dictionary];
     pluginDic[@"moduleName"] = module;
@@ -362,7 +362,11 @@ typedef void (^DoraemonPerformanceBlock)(NSDictionary *);
             hasModule = YES;
             NSMutableArray *pluginArray = moduleDic[@"pluginArray"];
             if (pluginArray) {
-                [pluginArray addObject:pluginDic];
+                if (index < 0 || index >= pluginArray.count) {
+                    [pluginArray addObject:pluginDic];
+                } else {
+                    [pluginArray insertObject:pluginDic atIndex:index];
+                }
             }
             [moduleDic setValue:pluginArray forKey:@"pluginArray"];
             *stop = YES;
@@ -384,7 +388,7 @@ typedef void (^DoraemonPerformanceBlock)(NSDictionary *);
     [self unregisterPlugin:pluginName withModule:moduleName];
 }
 
-- (void)registerPluginArray:(NSMutableArray*)array withModule:(NSString*)moduleName{
+- (void)registerPluginArray:(NSMutableArray*)array withModule:(NSString*)moduleName {
     if (!_dataArray){
         _dataArray = [[NSMutableArray alloc]init];
     }
@@ -761,7 +765,6 @@ typedef void (^DoraemonPerformanceBlock)(NSDictionary *);
 //                                    @{kBuriedPoint:@"dokit_sdk_platform_ck_filesync"}
 //                                    ]
                            }[@(pluginType)];
-    
     DoraemonManagerPluginTypeModel *model = [DoraemonManagerPluginTypeModel new];
     model.title = dataArray[0][kTitle];
     model.desc = dataArray[1][kDesc];
